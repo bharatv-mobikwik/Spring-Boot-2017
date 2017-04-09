@@ -4,6 +4,8 @@ package com.bharat.rdbms.mysql.jpa.controllers;
  * Created by BHARAT VERMA on 9/2/17.
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.bharat.rdbms.mysql.jpa.models.User;
 import com.bharat.rdbms.mysql.jpa.models.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/rdbms/mysql/user")
 public class UserController {
 
+    // Define the log object for this class
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @RequestMapping("/create")
     @ResponseBody
     public String create(String email, String name) {
@@ -24,8 +29,10 @@ public class UserController {
             userDao.save(user);
         }
         catch (Exception ex) {
+            log.error("Error creating the user: " + ex.toString());
             return "Error creating the user: " + ex.toString();
         }
+        log.debug("User succesfully created! (id = " + user.getId() + ")");
         return "User succesfully created! (id = " + user.getId() + ")";
     }
 
